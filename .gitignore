@@ -1,0 +1,17 @@
+gradle/
+gradlew*
+*.iml
+*.properties
+android/.gradletasknamecache
+android/*.iml
+android/.gradle
+.idea/
+.gradle
+android/build/
+proguard_logs/
+.classpath
+.project
+proguard-project.txt
+proguard/
+project.properties
+
