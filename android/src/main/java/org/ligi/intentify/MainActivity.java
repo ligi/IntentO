@@ -75,14 +75,23 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ResolveInfo resolveInfo = filteredResolveInfoList.get(position);
-                ComponentName component = new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
-                Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
-                getIntent().setComponent(component);
-                startActivity(getIntent());
-                finish();
+                startAppFromResolveInfo(resolveInfo);
             }
         });
+
+        if (filteredResolveInfoList.size()==1) {
+            startAppFromResolveInfo(filteredResolveInfoList.get(0));
+        }
     }
+
+    private void startAppFromResolveInfo(ResolveInfo resolveInfo) {
+        ComponentName component = new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+        Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
+        getIntent().setComponent(component);
+        startActivity(getIntent());
+        finish();
+    }
+
 
     private void showIntentDetails() {
         actionTextView.setText(getIntent().getAction());
