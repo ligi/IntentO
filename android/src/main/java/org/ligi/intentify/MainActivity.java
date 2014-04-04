@@ -44,27 +44,7 @@ public class MainActivity extends Activity {
 
         ButterKnife.inject(this);
 
-        actionTextView.setText(getIntent().getAction());
-
-        if (getIntent().getData()!=null) {
-            dataValTextView.setText(getIntent().getData().toString());
-        } else {
-            dataTextView.setVisibility(View.GONE);
-            dataValTextView.setVisibility(View.GONE);
-        }
-
-        if (getIntent().getCategories()!=null)  {
-            String categories="";
-            for (String categorie : getIntent().getCategories()) {
-                categories+=categorie+" ";
-            }
-            catTextView.setText(categories);
-        } else {
-            catTextView.setVisibility(View.GONE);
-            catValTextView.setVisibility(View.GONE);
-        }
-
-        getIntent().getAction();
+        showIntentDetails();
 
         final PackageManager pm = getPackageManager();
 
@@ -92,6 +72,28 @@ public class MainActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    private void showIntentDetails() {
+        actionTextView.setText(getIntent().getAction());
+
+        if (getIntent().getData()!=null) {
+            dataValTextView.setText(getIntent().getData().toString());
+        } else {
+            dataTextView.setVisibility(View.GONE);
+            dataValTextView.setVisibility(View.GONE);
+        }
+
+        if (getIntent().getCategories()!=null)  {
+            String categories="";
+            for (String categorie : getIntent().getCategories()) {
+                categories+=categorie+" ";
+            }
+            catValTextView.setText(categories);
+        } else {
+            catTextView.setVisibility(View.GONE);
+            catValTextView.setVisibility(View.GONE);
+        }
     }
 
 }
