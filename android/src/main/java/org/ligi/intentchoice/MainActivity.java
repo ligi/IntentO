@@ -1,4 +1,4 @@
-package org.ligi.intentify;
+package org.ligi.intentchoice;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

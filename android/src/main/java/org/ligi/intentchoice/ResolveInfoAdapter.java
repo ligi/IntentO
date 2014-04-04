@@ -1,4 +1,4 @@
-package org.ligi.intentify;
+package org.ligi.intentchoice;
 
 import android.content.Context;
 import android.content.pm.ResolveInfo;
