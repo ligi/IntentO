@@ -10,21 +10,59 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainActivity extends Activity {
 
-    private ListView intentList;
+    @InjectView(R.id.intentList)
+    ListView intentList;
+
+    @InjectView(R.id.action)
+    TextView actionTextView;
+
+    @InjectView(R.id.data)
+    TextView dataTextView;
+
+    @InjectView(R.id.data_val)
+    TextView dataValTextView;
+
+    @InjectView(R.id.categories)
+    TextView catTextView;
+
+    @InjectView(R.id.categories_val)
+    TextView catValTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("Intentify", "Incoming Action " + getIntent().getAction());
-        Log.i("Intentify", "Incoming Data " + getIntent().getData());
-        Log.i("Intentify", "Incoming Data " + getIntent().getCategories());
+        ButterKnife.inject(this);
+
+        actionTextView.setText(getIntent().getAction());
+
+        if (getIntent().getData()!=null) {
+            dataValTextView.setText(getIntent().getData().toString());
+        } else {
+            dataTextView.setVisibility(View.GONE);
+            dataValTextView.setVisibility(View.GONE);
+        }
+
+        if (getIntent().getCategories()!=null)  {
+            String categories="";
+            for (String categorie : getIntent().getCategories()) {
+                categories+=categorie+" ";
+            }
+            catTextView.setText(categories);
+        } else {
+            catTextView.setVisibility(View.GONE);
+            catValTextView.setVisibility(View.GONE);
+        }
 
         getIntent().getAction();
 
@@ -41,8 +79,6 @@ public class MainActivity extends Activity {
         targetIntent.setData(getIntent().getData());
 
         final List<ResolveInfo> resolveInfos = pm.queryIntentActivities(targetIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        intentList = (ListView) findViewById(R.id.intentList);
 
         intentList.setAdapter(new ResolveInfoAdapter( this, R.layout.item_resolve_info, resolveInfos) );
         intentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
