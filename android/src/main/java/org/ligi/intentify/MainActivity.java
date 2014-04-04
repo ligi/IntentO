@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -58,13 +59,22 @@ public class MainActivity extends Activity {
 
         targetIntent.setData(getIntent().getData());
 
-        final List<ResolveInfo> resolveInfos = pm.queryIntentActivities(targetIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        final List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(targetIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-        intentList.setAdapter(new ResolveInfoAdapter( this, R.layout.item_resolve_info, resolveInfos) );
+        final List<ResolveInfo> filteredResolveInfoList=new ArrayList<>();
+
+        for (ResolveInfo resolveInfo : resolveInfoList) {
+            // exclude our stuff
+            if (!resolveInfo.activityInfo.packageName.equals(getPackageName())) {
+                filteredResolveInfoList.add(resolveInfo);
+            }
+        }
+
+        intentList.setAdapter(new ResolveInfoAdapter( this, R.layout.item_resolve_info, filteredResolveInfoList) );
         intentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ResolveInfo resolveInfo = resolveInfos.get(position);
+                ResolveInfo resolveInfo = filteredResolveInfoList.get(position);
                 ComponentName component = new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
                 Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
                 getIntent().setComponent(component);
