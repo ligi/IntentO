@@ -1,11 +1,18 @@
 package org.ligi.intentify;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -85,6 +92,30 @@ public class MainActivity extends Activity {
     }
 
     private void startAppFromResolveInfo(ResolveInfo resolveInfo) {
+
+
+        final Drawable drawable = resolveInfo.loadIcon(getPackageManager());
+
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                1, notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+
+        final Notification notification = new NotificationCompat.Builder(this)
+                .setLargeIcon(((BitmapDrawable) drawable).getBitmap())
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentText(resolveInfo.activityInfo.name)
+                .setContentTitle(resolveInfo.activityInfo.name)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .build();
+
+        notificationManager.notify(1,notification);
+
         ComponentName component = new ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
         Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
         getIntent().setComponent(component);
