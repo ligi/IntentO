@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.ligi.intentchoice"
     android:versionCode="1"
-    android:versionName="0.1" >
+    android:versionName="0.1">
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -12,20 +12,29 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+
         <activity
-            android:name="org.ligi.intentchoice.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".ChooserActivity"
+            android:excludeFromRecents="true"
+            android:finishOnCloseSystemDialogs="true"
+            android:label="@string/app_name"
+            android:multiprocess="true">
+
+            <!-- TODO check why this is not working as intended: http://stackoverflow.com/questions/22854571/replace-android-intent-chooser-dialog -->
+            <intent-filter>
+                <action android:name="android.intent.action.CHOOSER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
 
             <!-- from https://github.com/intrications/intent-intercept/blob/master/IntentIntercept/AndroidManifest.xml -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" >
-                </action>
+                <action android:name="android.intent.action.VIEW"></action>
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.INSERT" />
@@ -36,8 +45,7 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" >
-                </action>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -53,9 +61,7 @@
                 <!-- <data android:scheme="" /> -->
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.PICK" >
-                </action>
-
+                <action android:name="android.intent.action.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -67,29 +73,20 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SENDTO" >
-                </action>
-
+                <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="*/*" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SENDTO" >
-                </action>
-
+                <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:scheme="mailto" />
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SEND_MULTIPLE" >
-                </action>
-
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="*/*" />
             </intent-filter>
             <intent-filter>

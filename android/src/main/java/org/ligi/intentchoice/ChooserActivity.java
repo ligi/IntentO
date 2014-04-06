@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends Activity {
+public class ChooserActivity extends Activity {
 
     @InjectView(R.id.intentList)
     ListView intentList;
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chooser);
 
         ButterKnife.inject(this);
 
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, ChooserActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
