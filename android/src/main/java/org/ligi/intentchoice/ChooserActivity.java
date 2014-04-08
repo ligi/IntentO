@@ -124,7 +124,7 @@ public class ChooserActivity extends Activity {
 
 
     private void showIntentDetails() {
-        actionTextView.setText(getIntent().getAction());
+        actionTextView.setText(getIntent().getAction().replace("android.intent.action",""));
 
         if (getIntent().getData()!=null) {
             dataValTextView.setText(getIntent().getData().toString());
@@ -136,7 +136,7 @@ public class ChooserActivity extends Activity {
         if (getIntent().getCategories()!=null)  {
             String categories="";
             for (String categorie : getIntent().getCategories()) {
-                categories+=categorie+" ";
+                categories+=categorie.replace("android.intent.category","")+" ";
             }
             catValTextView.setText(categories);
         } else {
