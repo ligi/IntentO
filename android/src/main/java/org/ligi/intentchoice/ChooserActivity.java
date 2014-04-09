@@ -124,7 +124,11 @@ public class ChooserActivity extends Activity {
 
 
     private void showIntentDetails() {
-        actionTextView.setText(getIntent().getAction().replace("android.intent.action",""));
+        if (getIntent().getAction()!=null) {
+            actionTextView.setText(getIntent().getAction().replace("android.intent.action", ""));
+        } else {
+            actionTextView.setVisibility(View.GONE);
+        }
 
         if (getIntent().getData()!=null) {
             dataValTextView.setText(getIntent().getData().toString());
