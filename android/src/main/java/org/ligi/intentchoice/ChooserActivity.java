@@ -125,6 +125,7 @@ public class ChooserActivity extends Activity {
 
     private void showIntentDetails() {
         if (getIntent().getAction()!=null) {
+            // remove redundant information
             actionTextView.setText(getIntent().getAction().replace("android.intent.action", ""));
         } else {
             actionTextView.setVisibility(View.GONE);
@@ -139,8 +140,10 @@ public class ChooserActivity extends Activity {
 
         if (getIntent().getCategories()!=null)  {
             String categories="";
-            for (String categorie : getIntent().getCategories()) {
-                categories+=categorie.replace("android.intent.category","")+" ";
+            for (String category : getIntent().getCategories()) {
+                // remove redundant information
+                categories+=category.replace("android.intent.category","");
+                categories+=" ";
             }
             catValTextView.setText(categories);
         } else {
