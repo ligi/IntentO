@@ -15,8 +15,16 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+//import org.ligi.axt.AXT;
+import org.ligi.axt.AXT;
+import org.ligi.intentchoice.utils.IntentDescriber;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,18 +52,25 @@ public class ChooserActivity extends Activity {
     @InjectView(R.id.categories_val)
     TextView catValTextView;
 
+    @InjectView(R.id.always_checkbox)
+    CheckBox alwaysCheckBox;
+
+    @InjectView(R.id.show_notification_checkbox)
+    CheckBox notificationCheckBox;
+
+    @InjectView(R.id.add_condition)
+    Button addConditionButton;
+
+    private IntentDescriber intentDescriber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chooser);
 
-        ButterKnife.inject(this);
-
-        showIntentDetails();
+        intentDescriber = new IntentDescriber(getIntent());
 
         final PackageManager pm = getPackageManager();
-
-        Intent targetIntent = new Intent(getIntent().getAction());
+        final Intent targetIntent = new Intent(getIntent().getAction());
 
         if (getIntent().getCategories() != null) {
             for (String s : getIntent().getCategories()) {
@@ -76,6 +91,34 @@ public class ChooserActivity extends Activity {
             }
         }
 
+        // if we have only one result left we can safely choose it
+        if (filteredResolveInfoList.size()==1) {
+            startAppFromResolveInfo(filteredResolveInfoList.get(0));
+            return;
+        }
+
+        setUpUI(filteredResolveInfoList);
+    }
+
+    private void setUpUI(List<ResolveInfo> filteredResolveInfoList) {
+        setContentView(R.layout.activity_chooser);
+
+        ButterKnife.inject(this);
+
+        showIntentDetails();
+
+        setupIntentList(filteredResolveInfoList);
+
+        alwaysCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AXT.at(notificationCheckBox).setVisibility(isChecked);
+                AXT.at(addConditionButton).setVisibility(isChecked);
+            }
+        });
+    }
+
+    private void setupIntentList(final List<ResolveInfo> filteredResolveInfoList) {
         intentList.setAdapter(new ResolveInfoAdapter( this, R.layout.item_resolve_info, filteredResolveInfoList) );
         intentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,10 +127,6 @@ public class ChooserActivity extends Activity {
                 startAppFromResolveInfo(resolveInfo);
             }
         });
-
-        if (filteredResolveInfoList.size()==1) {
-            startAppFromResolveInfo(filteredResolveInfoList.get(0));
-        }
     }
 
     private void startAppFromResolveInfo(ResolveInfo resolveInfo) {
@@ -107,7 +146,7 @@ public class ChooserActivity extends Activity {
         final Notification notification = new NotificationCompat.Builder(this)
                 .setLargeIcon(((BitmapDrawable) drawable).getBitmap())
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText(resolveInfo.activityInfo.name)
+                .setContentText(intentDescriber.getUserFacingIntentDescription())
                 .setContentTitle(resolveInfo.activityInfo.name)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
@@ -126,7 +165,7 @@ public class ChooserActivity extends Activity {
     private void showIntentDetails() {
         if (getIntent().getAction()!=null) {
             // remove redundant information
-            actionTextView.setText(getIntent().getAction().replace("android.intent.action", ""));
+            actionTextView.setText(intentDescriber.getUserFacingActionString());
         } else {
             actionTextView.setVisibility(View.GONE);
         }
@@ -139,17 +178,14 @@ public class ChooserActivity extends Activity {
         }
 
         if (getIntent().getCategories()!=null)  {
-            String categories="";
-            for (String category : getIntent().getCategories()) {
-                // remove redundant information
-                categories+=category.replace("android.intent.category","");
-                categories+=" ";
-            }
-            catValTextView.setText(categories);
+            catValTextView.setText(intentDescriber.getUserFacingCategoriesString());
         } else {
             catTextView.setVisibility(View.GONE);
             catValTextView.setVisibility(View.GONE);
         }
     }
+
+
+
 
 }

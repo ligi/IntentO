@@ -7,7 +7,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:animateLayoutChanges="true"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -73,6 +75,32 @@
     <ListView
         android:id="@+id/intentList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="always with this app"
+        android:id="@+id/always_checkbox"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="offer notification choice"
+        android:id="@+id/show_notification_checkbox"
+        android:checked="true"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add condition"
+        android:enabled="false"
+        android:id="@+id/add_condition"
+        android:visibility="gone"/>
 
 </LinearLayout>

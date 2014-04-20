@@ -10,11 +10,17 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
+    maven {
+        url project.hasProperty('ligisMavenUrl') ? ligisMavenUrl : "https://raw.github.com/ligi/ligis-mvn-repo/master";
+    }
+
 }
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.jakewharton:butterknife:4.0.1'
+    compile 'org.ligi:AXT:0.26'
+    compile 'com.google.guava:guava:16.0.1'
 }
 
 android {
