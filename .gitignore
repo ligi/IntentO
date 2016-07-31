@@ -1,5 +1,4 @@
 *.iml
-*.properties
 android/.gradletasknamecache
 android/*.iml
 android/.gradle
