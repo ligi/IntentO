@@ -47,11 +47,7 @@ class ChooserActivity : AppCompatActivity() {
         val pm = packageManager
         val targetIntent = Intent(intent.action)
 
-        if (intent.categories != null) {
-            for (s in intent.categories) {
-                targetIntent.addCategory(s)
-            }
-        }
+        intent.categories?.forEach { targetIntent.addCategory(it) }
 
         targetIntent.data = intent.data
 
