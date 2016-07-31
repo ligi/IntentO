@@ -5,13 +5,17 @@ buildscript {
 
     ext {
         support_version = '24.1.1'
+        kotlin_version = '1.0.3'
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 repositories {
     jcenter()
@@ -20,8 +24,11 @@ repositories {
 dependencies {
     compile "com.android.support:support-v4:$support_version"
     compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:recyclerview-v7:$support_version"
 
-    compile 'com.jakewharton:butterknife:5.1.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
+
     compile 'org.ligi:AXT:0.30'
     compile 'com.google.guava:guava:18.0'
 }
