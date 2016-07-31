@@ -30,7 +30,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"
 
     compile 'org.ligi:AXT:0.30'
-    compile 'com.google.guava:guava:18.0'
 }
 
 android {
