@@ -86,15 +86,6 @@
         android:id="@+id/always_checkbox"
         />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="offer notification choice"
-        android:id="@+id/show_notification_checkbox"
-        android:checked="true"
-        android:visibility="gone"
-        />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,5 +1,7 @@
 package org.ligi.intento
 
+import android.annotation.TargetApi
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -7,7 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AppCompatActivity
@@ -30,7 +34,6 @@ class ChooserActivity : AppCompatActivity() {
     val catTextView by lazy { findViewById(R.id.categories) as TextView }
     val catValTextView by lazy { findViewById(R.id.categories_val) as TextView }
     val alwaysCheckBox by lazy { findViewById(R.id.always_checkbox) as CheckBox }
-    val notificationCheckBox by lazy { findViewById(R.id.show_notification_checkbox) as CheckBox }
     val addConditionButton by lazy { findViewById(R.id.add_condition) as Button }
     val intentList by lazy { findViewById(R.id.intentList) as RecyclerView }
 
@@ -80,7 +83,6 @@ class ChooserActivity : AppCompatActivity() {
         setupIntentList(filteredResolveInfoList)
 
         alwaysCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            AXT.at(notificationCheckBox).setVisibility(isChecked)
             AXT.at(addConditionButton).setVisibility(isChecked)
         }
     }
@@ -105,14 +107,10 @@ class ChooserActivity : AppCompatActivity() {
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT)
 
-        val notification = NotificationCompat.Builder(this)
-                .setLargeIcon((drawable as BitmapDrawable).bitmap)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText(intentDescriber!!.userFacingIntentDescription)
-                .setContentTitle(label)
-                .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .build()
+        val bitmap = (drawable as BitmapDrawable).bitmap
+
+
+        val notification = notification(bitmap, contentIntent, label)
 
         notificationManager.notify(1, notification)
 
@@ -121,6 +119,31 @@ class ChooserActivity : AppCompatActivity() {
         intent.component = component
         startActivity(intent)
         finish()
+    }
+
+    @TargetApi(23)
+    private fun notification(bitmap: Bitmap?, contentIntent: PendingIntent?, label: CharSequence?): Notification? {
+        val notification = if (BuildConfig.VERSION_CODE < 23) {
+            NotificationCompat.Builder(this)
+                    .setLargeIcon(bitmap)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentText(intentDescriber!!.userFacingIntentDescription)
+                    .setContentTitle(label)
+                    .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
+                    .build()
+        } else {
+
+            Notification.Builder(this)
+                    .setSmallIcon(Icon.createWithBitmap(bitmap))
+                    .setLargeIcon(bitmap)
+                    .setContentText(intentDescriber!!.userFacingIntentDescription)
+                    .setContentTitle(label)
+                    .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
+                    .build()
+        }
+        return notification
     }
 
 
