@@ -96,6 +96,7 @@ class ChooserActivity : AppCompatActivity() {
     private fun startAppFromResolveInfo(resolveInfo: ResolveInfo) {
 
         val drawable = resolveInfo.loadIcon(packageManager)
+        val label = resolveInfo.loadLabel(packageManager)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -104,7 +105,14 @@ class ChooserActivity : AppCompatActivity() {
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT)
 
-        val notification = NotificationCompat.Builder(this).setLargeIcon((drawable as BitmapDrawable).bitmap).setSmallIcon(R.drawable.ic_launcher).setContentText(intentDescriber!!.userFacingIntentDescription).setContentTitle(resolveInfo.activityInfo.name).setContentIntent(contentIntent).setAutoCancel(true).build()
+        val notification = NotificationCompat.Builder(this)
+                .setLargeIcon((drawable as BitmapDrawable).bitmap)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentText(intentDescriber!!.userFacingIntentDescription)
+                .setContentTitle(label)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .build()
 
         notificationManager.notify(1, notification)
 
