@@ -2,6 +2,11 @@ buildscript {
     repositories {
         jcenter()
     }
+
+    ext {
+        support_version = '24.1.1'
+    }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
     }
@@ -13,7 +18,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:24.1.1'
+    compile "com.android.support:support-v4:$support_version"
+    compile "com.android.support:appcompat-v7:$support_version"
+
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'org.ligi:AXT:0.30'
     compile 'com.google.guava:guava:18.0'
