@@ -1,10 +1,9 @@
-package org.ligi.intentchoice;
+package org.ligi.intento;
 
 import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class IntentRuleProvider {
 

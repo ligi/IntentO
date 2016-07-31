@@ -1,4 +1,4 @@
-package org.ligi.intentchoice
+package org.ligi.intento
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -19,7 +19,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import org.ligi.axt.AXT
-import org.ligi.intentchoice.utils.IntentDescriber
+import org.ligi.intento.utils.IntentDescriber
 import java.util.ArrayList
 
 class ChooserActivity : AppCompatActivity() {

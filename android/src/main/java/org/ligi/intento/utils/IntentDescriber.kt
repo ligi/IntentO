@@ -1,4 +1,4 @@
-package org.ligi.intentchoice.utils
+package org.ligi.intento.utils
 
 import android.content.Intent
 

@@ -1,4 +1,4 @@
-package org.ligi.intentchoice
+package org.ligi.intento
 
 import android.content.pm.ResolveInfo
 import android.support.v7.widget.RecyclerView
