@@ -4,16 +4,16 @@ import android.app.Application;
 
 public class App extends Application {
 
-    private static IntentActionProvider actionProvider;
+    private static IntentRuleProvider actionProvider;
 
-    public static IntentActionProvider getActionProvider() {
+    public static IntentRuleProvider getActionProvider() {
         return actionProvider;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        actionProvider=new IntentActionProvider();
+        actionProvider=new IntentRuleProvider();
     }
 
 }

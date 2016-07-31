@@ -21,10 +21,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-//import org.ligi.axt.AXT;
 import org.ligi.axt.AXT;
 import org.ligi.intentchoice.utils.IntentDescriber;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,12 +134,10 @@ public class ChooserActivity extends Activity {
 
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-
-        Intent notificationIntent = new Intent(this, ChooserActivity.class);
+        final Intent notificationIntent = getIntent();
         PendingIntent contentIntent = PendingIntent.getActivity(this,
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
-
 
         final Notification notification = new NotificationCompat.Builder(this)
                 .setLargeIcon(((BitmapDrawable) drawable).getBitmap())
