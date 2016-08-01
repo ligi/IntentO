@@ -115,9 +115,9 @@ class ChooserActivity : AppCompatActivity() {
 
         notificationManager.notify(NOTIFICATION_ID, notification)
 
-        val component = ComponentName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
         Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name)
-        intent.component = component
+
+        intent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
         startActivity(intent)
         finish()
     }
