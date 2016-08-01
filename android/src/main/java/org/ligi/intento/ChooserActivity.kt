@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -39,27 +38,22 @@ class ChooserActivity : AppCompatActivity() {
     val addConditionButton by lazy { findViewById(R.id.add_condition) as Button }
     val intentList by lazy { findViewById(R.id.intentList) as RecyclerView }
 
-    val NOTIFICATION_ID = 1;
+    val NOTIFICATION_ID = 1
+
+    var saveStarted = true
 
     private var intentDescriber: IntentDescriber? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val followUpIntent = App.actionProvider.getFollowUpIntent(intent)
+
         intentDescriber = IntentDescriber(intent)
 
-        val pm = packageManager
-        val targetIntent = Intent(intent.action)
+        val targetIntent = followUpIntent ?: copyIntent()
 
-        intent.categories?.forEach { targetIntent.addCategory(it) }
-
-        targetIntent.putExtras(intent)
-
-        targetIntent.type = intent.type
-
-        targetIntent.data = intent.data
-
-        val resolveInfoList = pm.queryIntentActivities(targetIntent, PackageManager.MATCH_ALL)
+        val resolveInfoList = packageManager.queryIntentActivities(targetIntent, PackageManager.MATCH_ALL)
 
         val filteredResolveInfoList = resolveInfoList.filter { !it.activityInfo.packageName.equals(packageName) }
 
@@ -71,19 +65,33 @@ class ChooserActivity : AppCompatActivity() {
 
         setUpUI(filteredResolveInfoList, targetIntent)
 
-        supportActionBar?.subtitle = intentDescriber!!.userFacingIntentDescription
+    }
+
+    private fun copyIntent(): Intent {
+        val res = Intent(intent.action)
+        intent.categories?.forEach { res.addCategory(it) }
+        res.putExtras(intent)
+        res.type = intent.type
+        res.data = intent.data
+        return res
     }
 
     private fun setUpUI(filteredResolveInfoList: List<ResolveInfo>, intent: Intent) {
+        supportActionBar?.subtitle = intentDescriber!!.userFacingIntentDescription
+
         setContentView(R.layout.activity_chooser)
 
         showIntentDetails(intent)
 
         setupIntentList(filteredResolveInfoList)
 
+
         alwaysCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            AXT.at(addConditionButton).setVisibility(isChecked)
+            //AXT.at(addConditionButton).setVisibility(isChecked)
+            saveStarted = isChecked
         }
+
+        alwaysCheckBox.isChecked = saveStarted
     }
 
     private fun setupIntentList(filteredResolveInfoList: List<ResolveInfo>) {
@@ -101,13 +109,14 @@ class ChooserActivity : AppCompatActivity() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val notificationIntent = intent
+        val notificationIntent = copyIntent()
+        notificationIntent.putExtra("fromNotification", true)
+
         val contentIntent = PendingIntent.getActivity(this,
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT)
 
         val bitmap = (drawable as BitmapDrawable).bitmap
-
 
         val notification = notification(bitmap, contentIntent, label)
 
@@ -117,7 +126,12 @@ class ChooserActivity : AppCompatActivity() {
 
         Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name)
 
-        intent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name);
+        if (saveStarted) {
+            val rule = IntentRuleProvider.SimpleIntentRule(intent, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
+            App.actionProvider.intentRules.add(rule)
+        }
+
+        intent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
         startActivity(intent)
         finish()
     }
