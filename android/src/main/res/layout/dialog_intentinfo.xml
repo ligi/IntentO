@@ -5,26 +5,31 @@
               android:paddingBottom="@dimen/activity_vertical_margin"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              android:animateLayoutChanges="true">
+              android:paddingTop="@dimen/activity_vertical_margin">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/intentList"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-    <CheckBox
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="always with this app"
-            android:id="@+id/always_checkbox"/>
+            android:id="@+id/action"/>
 
-    <Button
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="add condition"
-            android:enabled="false"
-            android:id="@+id/add_condition"
-            android:visibility="gone"/>
+            android:id="@+id/data"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/extras"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mime"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/categories"/>
+
 </LinearLayout>

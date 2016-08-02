@@ -2,7 +2,7 @@ package org.ligi.intento.utils
 
 import android.content.Intent
 
-class IntentDescriber(private val intent: Intent) {
+class IntentDescriber(val intent: Intent) {
 
     val userFacingCategoriesString: String
         get() {

@@ -1,6 +1,7 @@
 package org.ligi.intento
 
 import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -18,22 +19,18 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 
-import org.ligi.axt.AXT
 import org.ligi.intento.utils.IntentDescriber
 
 class ChooserActivity : AppCompatActivity() {
 
-    val actionTextView by lazy { findViewById(R.id.action) as TextView }
-    val dataTextView by lazy { findViewById(R.id.data) as TextView }
-    val extrasValTextView by lazy { findViewById(R.id.extras_val) as TextView }
-    val dataValTextView by lazy { findViewById(R.id.data_val) as TextView }
-    val catTextView by lazy { findViewById(R.id.categories) as TextView }
-    val catValTextView by lazy { findViewById(R.id.categories_val) as TextView }
     val alwaysCheckBox by lazy { findViewById(R.id.always_checkbox) as CheckBox }
     val addConditionButton by lazy { findViewById(R.id.add_condition) as Button }
     val intentList by lazy { findViewById(R.id.intentList) as RecyclerView }
@@ -42,14 +39,12 @@ class ChooserActivity : AppCompatActivity() {
 
     var saveStarted = true
 
-    private var intentDescriber: IntentDescriber? = null
+    private val intentDescriber by lazy { IntentDescriber(intent) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val followUpIntent = App.actionProvider.getFollowUpIntent(intent)
-
-        intentDescriber = IntentDescriber(intent)
 
         val targetIntent = followUpIntent ?: copyIntent()
 
@@ -63,7 +58,7 @@ class ChooserActivity : AppCompatActivity() {
             return
         }
 
-        setUpUI(filteredResolveInfoList, targetIntent)
+        setUpUI(filteredResolveInfoList)
 
     }
 
@@ -76,15 +71,12 @@ class ChooserActivity : AppCompatActivity() {
         return res
     }
 
-    private fun setUpUI(filteredResolveInfoList: List<ResolveInfo>, intent: Intent) {
+    private fun setUpUI(filteredResolveInfoList: List<ResolveInfo>) {
         supportActionBar?.subtitle = intentDescriber!!.userFacingIntentDescription
 
         setContentView(R.layout.activity_chooser)
 
-        showIntentDetails(intent)
-
         setupIntentList(filteredResolveInfoList)
-
 
         alwaysCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             //AXT.at(addConditionButton).setVisibility(isChecked)
@@ -162,35 +154,17 @@ class ChooserActivity : AppCompatActivity() {
     }
 
 
-    private fun showIntentDetails(intent: Intent) {
-        if (intent.action != null) {
-            // remove redundant information
-            actionTextView.text = intentDescriber!!.userFacingActionString + " " + intent.type
-        } else {
-            actionTextView.visibility = View.GONE
-        }
-
-        if (intent.data != null) {
-            dataValTextView.text = intent.data.toString()
-        } else {
-            dataTextView.visibility = View.GONE
-            dataValTextView.visibility = View.GONE
-        }
-
-        if (intent.extras != null) {
-            var foo = ""
-            intent.extras.keySet().forEach { foo += it + " " + intent.extras.get(it) + "\n" }
-
-            extrasValTextView.text = foo
-        }
-
-        if (intent.categories != null) {
-            catValTextView.text = intentDescriber!!.userFacingCategoriesString
-        } else {
-            catTextView.visibility = View.GONE
-            catValTextView.visibility = View.GONE
-        }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_info -> InfoDialog(this).show(intentDescriber!!
+            )
+        }
 
+        return super.onOptionsItemSelected(item)
+    }
 }
