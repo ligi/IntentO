@@ -1,7 +1,6 @@
 package org.ligi.intento
 
 import android.annotation.TargetApi
-import android.app.AlertDialog
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -19,13 +18,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.TextView
 
 import org.ligi.intento.utils.IntentDescriber
 
@@ -72,7 +68,7 @@ class ChooserActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(filteredResolveInfoList: List<ResolveInfo>) {
-        supportActionBar?.subtitle = intentDescriber!!.userFacingIntentDescription
+        supportActionBar?.subtitle = intentDescriber.userFacingIntentDescription
 
         setContentView(R.layout.activity_chooser)
 
@@ -134,7 +130,7 @@ class ChooserActivity : AppCompatActivity() {
             NotificationCompat.Builder(this)
                     .setLargeIcon(bitmap)
                     .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentText(intentDescriber!!.userFacingIntentDescription)
+                    .setContentText(intentDescriber.userFacingIntentDescription)
                     .setContentTitle(label)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true)
@@ -144,7 +140,7 @@ class ChooserActivity : AppCompatActivity() {
             Notification.Builder(this)
                     .setSmallIcon(Icon.createWithBitmap(bitmap))
                     .setLargeIcon(bitmap)
-                    .setContentText(intentDescriber!!.userFacingIntentDescription)
+                    .setContentText(intentDescriber.userFacingIntentDescription)
                     .setContentTitle(label)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true)
@@ -161,8 +157,7 @@ class ChooserActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_info -> InfoDialog(this).show(intentDescriber!!
-            )
+            R.id.action_info -> InfoDialog(this).show(intentDescriber)
         }
 
         return super.onOptionsItemSelected(item)
