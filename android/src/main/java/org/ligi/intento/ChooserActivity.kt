@@ -134,6 +134,7 @@ class ChooserActivity : AppCompatActivity() {
                     .setContentTitle(label)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true)
+                    .setVisibility(Notification.VISIBILITY_SECRET)
                     .build()
         } else {
 
@@ -144,6 +145,7 @@ class ChooserActivity : AppCompatActivity() {
                     .setContentTitle(label)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true)
+                    .setVisibility(Notification.VISIBILITY_SECRET)
                     .build()
         }
         return notification
