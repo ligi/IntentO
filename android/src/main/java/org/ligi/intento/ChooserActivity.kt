@@ -112,8 +112,6 @@ class ChooserActivity : AppCompatActivity() {
 
         notificationManager.notify(NOTIFICATION_ID, notification)
 
-        Log.i("Intentify", " start Intent " + resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name)
-
         if (saveStarted) {
             val rule = IntentRuleProvider.SimpleIntentRule(intent, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
             App.actionProvider.intentRules.add(rule)
