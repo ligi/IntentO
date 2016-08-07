@@ -30,10 +30,10 @@ class IntentDescriber(val intent: Intent) {
         get() {
             val res = StringBuilder(userFacingActionString)
             if (intent.categories != null) {
-                res.append("@" + claspedCategoriesString)
+                res.append("@$claspedCategoriesString")
             }
             if (intent.data != null) {
-                res.append(intent.data)
+                res.append(":${intent.data}")
             }
             return res.toString()
         }
