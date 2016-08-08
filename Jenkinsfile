@@ -1,4 +1,4 @@
-def flavorCombination=''
+def flavorCombination='Prod'
 
 node {
 
