@@ -1,11 +1,20 @@
 package org.ligi.intento
 
 import android.app.Application
+import org.ligi.intento.etc.AppComponent
+import org.ligi.intento.etc.AppModule
+import org.ligi.intento.etc.DaggerAppComponent
 
-class App : Application() {
+open class App : Application() {
 
     companion object {
-        val actionProvider by lazy { IntentRuleProvider() }
+        lateinit var component: AppComponent
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        component = createComponent()
+    }
+
+    open fun createComponent() = DaggerAppComponent.builder().appModule(AppModule(this)).build()
 }

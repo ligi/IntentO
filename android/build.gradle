@@ -7,6 +7,7 @@ buildscript {
     ext {
         support_version = '24.1.1'
         kotlin_version = '1.0.3'
+        dagger_version = '2.6'
     }
 
     dependencies {
@@ -29,6 +30,12 @@ repositories {
 }
 
 dependencies {
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile "com.google.dagger:dagger:$dagger_version"
+
     compile "com.android.support:support-v4:$support_version"
     compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:recyclerview-v7:$support_version"
@@ -41,6 +48,12 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile "com.android.support:support-annotations:$support_version"
     androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
+
+    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.1'
+    androidTestCompile 'org.mockito:mockito-core:1.9.5'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
 }
 
 android {
@@ -50,6 +63,17 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 24
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "org.ligi.intento.AppReplacingRunner"
     }
+
+    packagingOptions {
+        // needed for assertJ
+        exclude 'asm-license.txt'
+        exclude 'LICENSE'
+        exclude 'NOTICE'
+    }
+}
+
+kapt {
+    generateStubs = true
 }

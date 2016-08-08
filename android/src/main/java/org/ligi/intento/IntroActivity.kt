@@ -13,8 +13,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.ligi.intento.utils.IntentDescriber
 import java.util.*
+import javax.inject.Inject
 
 class IntroActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var intentRulesProvider: IntentRuleProvider
 
     val rulesRecycler by lazy { findViewById(R.id.rulesRecycler) as RecyclerView }
     val emptyView by lazy { findViewById(R.id.emptyView) }
@@ -24,7 +28,9 @@ class IntroActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_info)
 
-        rulesRecycler.adapter = RuleRecycler(App.actionProvider.intentRules)
+        App.component.inject(this)
+
+        rulesRecycler.adapter = RuleRecycler(intentRulesProvider.intentRules)
 
         rulesRecycler.layoutManager = LinearLayoutManager(this)
 
@@ -33,7 +39,7 @@ class IntroActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        emptyView.visibility = if (App.actionProvider.intentRules.isEmpty()) VISIBLE else GONE
+        emptyView.visibility = if (intentRulesProvider.intentRules.isEmpty()) VISIBLE else GONE
         rulesRecycler.adapter.notifyDataSetChanged()
     }
 

@@ -23,8 +23,12 @@ import android.widget.Button
 import android.widget.CheckBox
 import org.ligi.intento.model.SimpleIntent
 import org.ligi.intento.utils.IntentDescriber
+import javax.inject.Inject
 
 class ChooserActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var intentRulesProvider: IntentRuleProvider
 
     val alwaysCheckBox by lazy { findViewById(R.id.always_checkbox) as CheckBox }
     val addConditionButton by lazy { findViewById(R.id.add_condition) as Button }
@@ -39,7 +43,8 @@ class ChooserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val followUpIntent = App.actionProvider.getFollowUpIntent(intent)
+        App.component.inject(this)
+        val followUpIntent = intentRulesProvider.getFollowUpIntent(intent)
 
         val targetIntent = followUpIntent ?: copyIntent()
 
@@ -118,7 +123,7 @@ class ChooserActivity : AppCompatActivity() {
                     className = resolveInfo.activityInfo.name,
                     icon = bitmap
             )
-            App.actionProvider.intentRules.add(rule)
+            intentRulesProvider.intentRules.add(rule)
         }
 
         intent.setClassName(resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
