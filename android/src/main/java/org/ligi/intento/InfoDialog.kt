@@ -21,12 +21,9 @@ class InfoDialog(val ctx: Context) {
 
     fun show(intentDescriber: IntentDescriber) {
         val intent = intentDescriber.intent
-        if (intent.action != null) {
-            // remove redundant information
-            actionTextView.text =  Html.fromHtml("<b>Action:</b> ${intentDescriber.userFacingActionString}")
-        } else {
-            actionTextView.visibility = View.GONE
-        }
+
+        // remove redundant information
+        actionTextView.text = Html.fromHtml("<b>Action:</b> ${intentDescriber.userFacingActionString}")
 
         if (intent.data != null) {
             dataTextView.text = Html.fromHtml("<b>Data:</b> ${intent.data.toString()}")
@@ -34,14 +31,14 @@ class InfoDialog(val ctx: Context) {
             dataTextView.visibility = View.GONE
         }
 
-        if (intent.extras != null) {
-            extrasTextView.text =  Html.fromHtml("<b>Extras:</b><br/>" +
-                    intent.extras.keySet().map { "$it=${intent.extras.get(it)}" }.joinToString("<br/>"))
+        if (intent.extras.isNotEmpty()) {
+            extrasTextView.text = Html.fromHtml("<b>Extras:</b><br/>" +
+                    intent.extras.map { "${it.first}=${it.second}" }.joinToString("<br/>"))
         } else {
             extrasTextView.visibility = View.GONE
         }
 
-        if (intent.categories != null) {
+        if (intent.categories.isNotEmpty()) {
             catTextView.text = Html.fromHtml("<b>Category: </b>${intentDescriber.userFacingCategoriesString}")
         } else {
             catTextView.visibility = View.GONE

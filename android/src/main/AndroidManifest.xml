@@ -24,12 +24,12 @@
                 android:label="@string/app_name"
                 android:multiprocess="true">
 
-            <!-- TODO check why this is not working as intended: http://stackoverflow.com/questions/22854571/replace-android-intent-chooser-dialog -->
+            <!-- TODO check why this is not working as intended: http://stackoverflow.com/questions/22854571/replace-android-intent-chooser-dialog
             <intent-filter>
                 <action android:name="android.intent.action.CHOOSER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-
+            -->
 
             <!-- from https://github.com/intrications/intent-intercept/blob/master/IntentIntercept/AndroidManifest.xml -->
 

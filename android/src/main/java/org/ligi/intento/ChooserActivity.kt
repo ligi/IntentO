@@ -17,12 +17,11 @@ import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.CheckBox
-
+import org.ligi.intento.model.SimpleIntent
 import org.ligi.intento.utils.IntentDescriber
 
 class ChooserActivity : AppCompatActivity() {
@@ -35,7 +34,7 @@ class ChooserActivity : AppCompatActivity() {
 
     var saveStarted = true
 
-    private val intentDescriber by lazy { IntentDescriber(intent) }
+    private val intentDescriber by lazy { IntentDescriber(SimpleIntent.fromIntent(intent)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +61,8 @@ class ChooserActivity : AppCompatActivity() {
         val res = Intent(intent.action)
         intent.categories?.forEach { res.addCategory(it) }
         res.putExtras(intent)
-        res.type = intent.type
         res.data = intent.data
+        res.type = intent.type
         return res
     }
 
@@ -92,7 +91,7 @@ class ChooserActivity : AppCompatActivity() {
 
     private fun startAppFromResolveInfo(resolveInfo: ResolveInfo) {
 
-        val drawable = resolveInfo.loadIcon(packageManager)
+
         val label = resolveInfo.loadLabel(packageManager)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -104,6 +103,7 @@ class ChooserActivity : AppCompatActivity() {
                 1, notificationIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT)
 
+        val drawable = resolveInfo.loadIcon(packageManager)
         val bitmap = (drawable as BitmapDrawable).bitmap
 
         val notification = notification(bitmap, contentIntent, label)
@@ -113,7 +113,11 @@ class ChooserActivity : AppCompatActivity() {
         notificationManager.notify(NOTIFICATION_ID, notification)
 
         if (saveStarted) {
-            val rule = IntentRuleProvider.SimpleIntentRule(intent, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.name)
+            val rule = IntentRuleProvider.SimpleIntentRule(intent,
+                    packageName = resolveInfo.activityInfo.packageName,
+                    className = resolveInfo.activityInfo.name,
+                    icon = bitmap
+            )
             App.actionProvider.intentRules.add(rule)
         }
 

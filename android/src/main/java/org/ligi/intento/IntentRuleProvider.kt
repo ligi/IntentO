@@ -1,24 +1,25 @@
 package org.ligi.intento
 
 import android.content.Intent
-import java.util.ArrayList
+import android.graphics.Bitmap
+import org.ligi.intento.model.SimpleIntent
+import java.util.*
 
 class IntentRuleProvider {
 
     val intentRules = ArrayList<IntentRule>()
 
-    class SimpleIntentRule(intent: Intent, val packageName: String, val className: String) : IntentRule {
+    class SimpleIntentRule(intent: Intent, val packageName: String, val className: String,val icon: Bitmap) : IntentRule {
 
-        private val action = intent.action
-        private val categories = intent.categories
+        val simpleIntent = SimpleIntent.fromIntent(intent)
 
         override fun getFollowupIntent(intent: Intent): Intent? {
 
-            if (action != null && !intent.action.equals((action))) {
+            if ( !intent.action.equals((simpleIntent.action))) {
                 return null
             }
 
-            if (categories != null && !categories.equals(intent.categories)) {
+            if ( !simpleIntent.categories.equals(intent.categories)) {
                 return null
             }
 

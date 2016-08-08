@@ -1,8 +1,8 @@
 package org.ligi.intento.utils
 
-import android.content.Intent
+import org.ligi.intento.model.SimpleIntent
 
-class IntentDescriber(val intent: Intent) {
+class IntentDescriber(val intent: SimpleIntent) {
 
     val userFacingCategoriesString: String
         get() {
@@ -29,7 +29,7 @@ class IntentDescriber(val intent: Intent) {
     val userFacingIntentDescription: String
         get() {
             val res = StringBuilder(userFacingActionString)
-            if (intent.categories != null) {
+            if (!intent.categories.isEmpty()) {
                 res.append("@$claspedCategoriesString")
             }
             if (intent.data != null) {
