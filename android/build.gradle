@@ -66,6 +66,18 @@ android {
         testInstrumentationRunner "org.ligi.intento.AppReplacingRunner"
     }
 
+    flavorDimensions "build"
+
+    productFlavors {
+        dev {
+            dimension "build"
+            minSdkVersion 21
+        }
+
+        prod {
+            dimension "build"
+        }
+    }
     packagingOptions {
         // needed for assertJ
         exclude 'asm-license.txt'
